@@ -61,4 +61,10 @@ tripSchema.virtual("comments", {
     }
 });
 
+tripSchema.virtual("tasks", {
+    ref: "tasks",
+    localField: "_id",
+    foreignField: "tripId"
+})
+
 export const Trip = mongoose.model<TripType>("trips", tripSchema);
