@@ -13,6 +13,7 @@ import { activityRoutes } from "./api/activity/activity.routes.js";
 import dns from "dns";
 import { notificationRoutes } from "./api/notifications/notifications.routes.js";
 import { commentRoutes } from "./api/comments/comments.routes.js";
+import { taskRoutes } from "./api/tasks/tasks.routes.js";
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -36,6 +37,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/trips", tripRoutes);
+app.use("/api/tasks", taskRoutes);
 app.use("/api/itinerary", itineraryRoutes);
 app.use("/api/days", dayRoutes);
 app.use("/api/activities", activityRoutes);
