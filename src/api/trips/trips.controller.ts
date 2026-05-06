@@ -4,12 +4,14 @@ import { Itinerary } from "../itinerary/itinerary.model.js";
 import { Day } from "../days/days.model.js";
 import { Activity } from "../activity/activity.model.js";
 import { Comment } from "../comments/comments.model.js";
+import { Task } from "../tasks/tasks.model.js";
 
 export const getAllTrips = async (req: Request, res: Response) => {
     try {
         const trips = await Trip.find({ visibility: "public" })
             .populate("owner", "username avatar")
             .populate("itineraries")
+            .populate("tasks", "title")
             .populate({
                 path: "comments",
                 populate: {
@@ -31,6 +33,7 @@ export const getTripsByUser = async (req: Request, res: Response) => {
         const trips = await Trip.find({ owner: userId, visibility: "public" })
             .populate("owner", "username avatar")
             .populate("itineraries")
+            .populate("tasks")
             .populate("comments", "author text");
 
         res.json(trips);
@@ -47,6 +50,7 @@ export const getMyTrips = async (req: Request, res: Response) => {
         const trips = await Trip.find({ owner: userId })
             .populate("owner")
             .populate("members")
+            .populate("tasks")
             .populate("comments");
         return res.json(trips);
     } catch (error) {
@@ -60,6 +64,7 @@ export const getOneTrip = async (req: Request, res: Response) => {
         const trip = await Trip.findById(id)
             .populate("owner", "username avatar")
             .populate("members", "username avatar")
+            .populate("tasks")
             .populate("comments", "author text");
 
         if (!trip) {
@@ -127,6 +132,7 @@ export const deleteTrip = async (req: Request, res: Response) => {
         await Itinerary.deleteMany({ tripId: id });
         await Day.deleteMany({ tripId: id });
         await Activity.deleteMany({ tripId: id });
+        await Task.deleteMany({ tripId: id });
         await Comment.deleteMany({ tripId: id });
 
         return res.json({ success: true, trip });
