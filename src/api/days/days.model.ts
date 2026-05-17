@@ -16,8 +16,6 @@ const daySchema = new Schema(
         title: { type: String },
         description: { type: String },
         location: { type: String },
-        createdAt: { type: Date },
-        updatedAt: { type: Date },
         order: { type: Number },
     },
     {
