@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { TripType } from "./trips.types.js";
 
-const tripSchema = new Schema(
+const tripSchema: Schema<TripType> = new Schema(
     {
         title: { type: String, required: [true, "El título es obligatorio."] },
 
@@ -14,6 +14,13 @@ const tripSchema = new Schema(
             ref: "users",
             required: [true, "El viaje debe tener un propietario."],
         },
+
+        members: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "users",
+            },
+        ],
 
         startDate: { type: Date, required: true },
 
@@ -31,10 +38,10 @@ const tripSchema = new Schema(
         status: { type: String, enum: ["pending", "completed"], default: "pending" },
     },
 
-    { 
+    {
         timestamps: true,
         toJSON: { virtuals: true },
-        toObject: { virtuals: true }
+        toObject: { virtuals: true },
     }
 );
 
@@ -42,14 +49,6 @@ tripSchema.virtual("itineraries", {
     ref: "itineraries",
     localField: "_id",
     foreignField: "tripId",
-    // justOne: true,
-});
-
-
-tripSchema.virtual("members", {
-    ref: "members",
-    localField: "_id",
-    foreignField: "memberId"
 });
 
 tripSchema.virtual("comments", {
@@ -57,14 +56,14 @@ tripSchema.virtual("comments", {
     localField: "_id",
     foreignField: "targetId",
     match: {
-        targetModel: "trips"
-    }
+        targetModel: "trips",
+    },
 });
 
 tripSchema.virtual("tasks", {
     ref: "tasks",
     localField: "_id",
-    foreignField: "tripId"
-})
+    foreignField: "tripId",
+});
 
 export const Trip = mongoose.model<TripType>("trips", tripSchema);
