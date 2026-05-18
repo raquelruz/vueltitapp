@@ -14,7 +14,7 @@ export const getLogin = (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
     try {
-        const users = await User.find().select("+password"); // En caso de tener select: true en el modelo, como lo tenemos y aún asi querer la contraseña
+        const users = await User.find().select("name username email"); // En caso de tener select: true en el modelo, como lo tenemos y aún asi querer la contraseña
         return res.json(users);
     } catch (error) {
         return res.status(500).json({ error: "Error al obtener los usuarios", message: (error as Error).message });

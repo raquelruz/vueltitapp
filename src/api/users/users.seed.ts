@@ -6,7 +6,7 @@ const userData =  [
     {
         username: "raquelruz",
         name: "Raquel",
-        email: "raquel@gmail.com",
+        email: "raquel@vueltitapp.com",
         password: "123456",
         avatar: "https://cdn-icons-png.flaticon.com/512/9187/9187604.png",
         bio: "Usuario de prueba",
@@ -16,7 +16,7 @@ const userData =  [
     {
         username: "usuarioDePrueba",
         name: "Usuario de Prueba",
-        email: "usuariodeprueba@gmail.com",
+        email: "usuariodeprueba@vueltitapp.com",
         password: "123456",
         avatar: "https://cdn-icons-png.flaticon.com/512/9187/9187604.png",
         bio: "Otro usuario de prueba",
@@ -26,7 +26,7 @@ const userData =  [
     {
         username: "admin",
         name: "Admin",
-        email: "admin@gmail.com",
+        email: "admin@vueltitapp.com",
         password: "123456",
         avatar: "https://cdn-icons-png.flaticon.com/512/9187/9187604.png",
         bio: "Usuario Admin",
