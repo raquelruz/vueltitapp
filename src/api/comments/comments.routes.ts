@@ -5,7 +5,7 @@ export const commentRoutes: Router = Router();
 
 commentRoutes.get("/trip/:tripId", getCommentsByTrip);
 
-commentRoutes.get("activities/:activityId", getCommentsByActivity);
+commentRoutes.get("/activities/:activityId", getCommentsByActivity);
 
 commentRoutes.post("/", createComment);
 

@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { UserType } from "./users.types.js";
 
-const userSchema: Schema = new Schema(
+const userSchema: Schema<UserType> = new Schema(
     {
         username: {
             type: String,
@@ -10,9 +10,7 @@ const userSchema: Schema = new Schema(
             index: true,
             trim: true,
         },
-        name: {
-            type: String,
-        },
+
         email: {
             type: String,
             required: [true, "El email es obligatorio."],
@@ -24,26 +22,40 @@ const userSchema: Schema = new Schema(
             required: [true, "La contraseña es obligatoria."],
             select: false, // Cuando hagas un .find() la contraseña no vendrá por defecto.
         },
+
+        name: {
+            type: String,
+        },
+
+        surname: {
+            type: String,
+        },
+
         avatar: { type: String },
+
         bio: {
             type: String,
             minLength: 10,
             maxLength: [200, "La biografía no puede superar los 200 caracteres."],
         },
+
         languages: {
             type: [String],
             default: [],
         },
+
         isPublic: {
             type: Boolean,
             required: true,
             default: false,
         },
     },
-    { 
-        timestamps: true, 
-        toJSON: { virtuals: true }, 
-        toObject: { virtuals: true } }
+    
+    {
+        timestamps: true,
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
+    }
 );
 
 userSchema.virtual("fullName").get(function () {

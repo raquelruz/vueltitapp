@@ -20,7 +20,6 @@ dns.setDefaultResultOrder("ipv4first");
 db.connect();
 
 const app: Application = express();
-
 const PORT = process.env.PORT || 3000;
 
 // Coge la petición y la transforma a JSON
@@ -35,8 +34,8 @@ app.get("/", (req: Request, res: Response) => {
     return res.json({ message: "Servidor funcionando correctamente" });
 });
 
-app.use("/api/users", userRoutes);
 app.use("/api/trips", tripRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/itinerary", itineraryRoutes);
 app.use("/api/days", dayRoutes);

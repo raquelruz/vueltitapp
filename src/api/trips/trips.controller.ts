@@ -5,12 +5,14 @@ import { Day } from "../days/days.model.js";
 import { Activity } from "../activity/activity.model.js";
 import { Comment } from "../comments/comments.model.js";
 import { Task } from "../tasks/tasks.model.js";
+import { Notification } from "../notifications/notifications.model.js";
 
 export const getAllTrips = async (req: Request, res: Response) => {
     try {
         const trips = await Trip.find({ visibility: "public" })
             .populate("owner", "username avatar")
-            .populate("itineraries")
+            .populate("members", "username avatar")
+            .populate("itineraries", "title description")
             .populate("tasks", "title")
             .populate({
                 path: "comments",
@@ -18,8 +20,7 @@ export const getAllTrips = async (req: Request, res: Response) => {
                     path: "author",
                     select: "username avatar text",
                 },
-            })
-
+            });
 
         return res.json(trips);
     } catch (error: Error | unknown) {
@@ -32,8 +33,8 @@ export const getTripsByUser = async (req: Request, res: Response) => {
         const { userId } = req.params;
         const trips = await Trip.find({ owner: userId, visibility: "public" })
             .populate("owner", "username avatar")
-            .populate("itineraries")
-            .populate("tasks")
+            .populate("itineraries", "title description")
+            .populate("tasks", "title isCompleted assignedTo")
             .populate("comments", "author text");
 
         res.json(trips);
@@ -48,10 +49,10 @@ export const getMyTrips = async (req: Request, res: Response) => {
     try {
         const { userId } = req.params;
         const trips = await Trip.find({ owner: userId })
-            .populate("owner")
-            .populate("members")
-            .populate("tasks")
-            .populate("comments");
+            .populate("owner", "username avatar")
+            .populate("members", "username avatar")
+            .populate("tasks", "title isCompleted assignedTo")
+            .populate("comments", "author text");
         return res.json(trips);
     } catch (error) {
         return res.status(500).json({ error: "Error al obtener tus viajes", message: (error as Error).message });
@@ -64,7 +65,7 @@ export const getOneTrip = async (req: Request, res: Response) => {
         const trip = await Trip.findById(id)
             .populate("owner", "username avatar")
             .populate("members", "username avatar")
-            .populate("tasks")
+            .populate("tasks", "title isCompleted assignedTo")
             .populate("comments", "author text");
 
         if (!trip) {
@@ -90,33 +91,40 @@ export const createTrip = async (req: Request, res: Response) => {
 export const editTrip = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const trip = await Trip.findByIdAndUpdate(id, req.body, { returnDocument: "after" });
+
+        const trip = await Trip.findByIdAndUpdate(id, req.body, {
+            returnDocument: "after",
+        });
 
         if (!trip) {
             return res.status(404).json({ error: "Viaje no encontrado" });
         }
 
-        // Si se ha completado el sueño, notificar a los participantes
-        // if (req.body.status === "completed" && dream.participants?.length) {
-        //     const notifications = dream.participants
-        //         .filter((p) => p.toString() !== dream.owner.toString())
-        //         .map((participantId) => ({
-        //             recipient: participantId,
-        //             sender: dream.owner,
-        //             type: "dream_completed",
-        //             targetModel: "dreams",
-        //             targetId: dream._id,
-        //             message: "¡Ha completado un sueño en el que participas!",
-        //         }));
+        // NOTIFICACIÓN: viaje completado
+        if (req.body.status === "completed" && trip.members?.length) {
+            const notifications = trip.members
+                .filter((member) => member.toString() !== trip.owner.toString())
+                .map((memberId) => ({
+                    recipient: memberId,
+                    sender: trip.owner,
+                    type: "trip_completed",
+                    targetModel: "trips",
+                    targetId: trip._id,
+                    message: "¡Se ha completado un viaje en el que participas!",
+                    isRead: false,
+                }));
 
-        //     if (notifications.length) {
-        //         await Notification.insertMany(notifications);
-        //     }
-        // }
+            if (notifications.length) {
+                await Notification.insertMany(notifications);
+            }
+        }
 
         return res.json(trip);
     } catch (error) {
-        return res.status(500).json({ error: "Error al editar el viaje", message: (error as Error).message });
+        return res.status(500).json({
+            error: "Error al editar el viaje",
+            message: (error as Error).message,
+        });
     }
 };
 
@@ -133,7 +141,7 @@ export const deleteTrip = async (req: Request, res: Response) => {
         await Day.deleteMany({ tripId: id });
         await Activity.deleteMany({ tripId: id });
         await Task.deleteMany({ tripId: id });
-        await Comment.deleteMany({ tripId: id });
+        await Comment.deleteMany({ targetId: id });
 
         return res.json({ success: true, trip });
     } catch (error) {

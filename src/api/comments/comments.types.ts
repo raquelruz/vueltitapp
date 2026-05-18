@@ -2,8 +2,9 @@ import { Types } from "mongoose";
 
 export type CommentType = {
     _id: Types.ObjectId;
-    dreamId: Types.ObjectId;
     author: Types.ObjectId;
     text: string;
+    targetId: Types.ObjectId;
+    targetModel: "trips" | "activities";
     parentComment?: Types.ObjectId;
 };

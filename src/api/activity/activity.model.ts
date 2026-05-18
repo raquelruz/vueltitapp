@@ -20,6 +20,13 @@ const activitySchema = new Schema(
             default: "",
         },
 
+        members: [
+            { 
+                type: Schema.Types.ObjectId,
+                ref: "users"
+            }
+        ],
+
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: "users"
@@ -58,21 +65,17 @@ const activitySchema = new Schema(
     },
     {
         timestamps: true,
+        toJSON: { virtuals : true },
+        toObject: { virtuals: true }
     }
 );
-
-activitySchema.virtual("members", {
-    ref: "members",
-    localField: "_id",
-    foreignField: "memberId"
-});
 
 activitySchema.virtual("comments", {
     ref: "comments",
     localField: "_id",
     foreignField: "targetId",
     match: {
-        targetModel: "trips"
+        targetModel: "activities"
     }
 });
 
