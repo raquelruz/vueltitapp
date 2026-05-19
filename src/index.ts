@@ -14,6 +14,7 @@ import dns from "dns";
 import { notificationRoutes } from "./api/notifications/notifications.routes.js";
 import { commentRoutes } from "./api/comments/comments.routes.js";
 import { taskRoutes } from "./api/tasks/tasks.routes.js";
+import { updateRoutes } from "./api/updates/updates.routes.js";
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -40,9 +41,11 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/itinerary", itineraryRoutes);
 app.use("/api/days", dayRoutes);
 app.use("/api/activities", activityRoutes);
-app.use("/api/comments", commentRoutes)
-app.use("/api/notifications", notificationRoutes)
+app.use("/api/comments", commentRoutes);
+app.use("/api/updates", updateRoutes);
+app.use("/api/notifications", notificationRoutes);
 
+console.log("updatesRoutes:", updateRoutes);
 
 // Crea el servidor
 app.listen(PORT, () => {
