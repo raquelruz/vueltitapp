@@ -45,8 +45,6 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/updates", updateRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-console.log("updatesRoutes:", updateRoutes);
-
 // Crea el servidor
 app.listen(PORT, () => {
     console.log(`Servidor funcionando en http://localhost:${PORT}`);
