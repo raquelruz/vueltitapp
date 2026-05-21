@@ -2,16 +2,17 @@ import { Request, Response } from "express";
 import { Update } from "./updates.model.js";
 import { Trip } from "../trips/trips.model.js";
 import { Notification } from "../notifications/notifications.model.js";
+import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getUpdatesByTrip = async (req: Request, res: Response) => {
     try {
-        console.log("HOLA")
         const { tripId } = req.params;
         const updates = await Update.find({ tripId })
         .sort({ createdAt: -1 });
-        return res.json(updates);
+
+        return sendSuccess(res, updates);
     } catch (error) {
-        return res.status(500).json({ error: "Error al obtener las actualizaciones del viaje", message: (error as Error).message })
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -31,8 +32,8 @@ export const createUpdate = async (req: Request, res: Response) => {
             })
         };
 
-        return res.status(201).json(newUpdate);
+        return sendSuccess(res, newUpdate, "Actualización creada", 201);
     } catch (error) {
-        return res.status(500).json({ error: "Error al crear la actualización", message: (error as Error).message })
+        return sendError(res, (error as Error).message, 500);
     }
 }
