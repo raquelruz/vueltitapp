@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Notification } from "./notifications.model.js";
+import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getNotificationByUser = async (req: Request, res: Response) => {
     try {
@@ -12,12 +13,9 @@ export const getNotificationByUser = async (req: Request, res: Response) => {
             .populate("sender", "username avatar")
             .limit(50);
 
-        return res.json(notifications);
+        return sendSuccess(res, notifications);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al obtener las notificaciones",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -30,21 +28,19 @@ export const getUnreadCount = async (req: Request, res: Response) => {
             isRead: false,
         });
 
-        return res.json({ count });
+        return sendSuccess(res, count);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al contar notificaciones",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
 export const createNotification = async (req: Request, res: Response) => {
     try {
         const newNotification = await Notification.create(req.body);
-        return res.status(201).json(newNotification);
+
+        return sendSuccess(res, newNotification, "Notificación creada", 201);
     } catch (error) {
-        return res.status(500).json({ error: "Error al crear la notificación", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -55,17 +51,12 @@ export const markAsRead = async (req: Request, res: Response) => {
         const notification = await Notification.findByIdAndUpdate(id, { isRead: true }, { new: true });
 
         if (!notification) {
-            return res.status(404).json({
-                error: "Notificación no encontrada",
-            });
+            return sendError(res, "Notificación no encontrada", 404);
         }
 
-        return res.json(notification);
+        return sendSuccess(res, notification);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al marcar como leída",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -75,11 +66,11 @@ export const deleteNotification = async (req: Request, res: Response) => {
         const notification = await Notification.findByIdAndDelete(id);
 
         if (!notification) {
-            return res.status(404).json({ error: "Notificación no encontrada" });
+            return sendError(res, "Notificación no encontrada", 404);
         }
 
-        return res.json({ success: true, notification });
+        return sendSuccess(res, notification);
     } catch (error) {
-        return res.status(500).json({ error: "Error al borrar la notificación", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
