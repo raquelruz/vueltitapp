@@ -3,6 +3,7 @@ import { Comment } from "./comments.model.js";
 import { Trip } from "../trips/trips.model.js";
 import { Activity } from "../activity/activity.model.js";
 import { Notification } from "../notifications/notifications.model.js";
+import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getCommentsByTrip = async (req: Request, res: Response) => {
     try {
@@ -18,12 +19,9 @@ export const getCommentsByTrip = async (req: Request, res: Response) => {
                 populate: { path: "author", select: "username avatar" },
             });
 
-        return res.json(comments);
+        return sendSuccess(res, comments);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al obtener los comentarios",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -41,12 +39,9 @@ export const getCommentsByActivity = async (req: Request, res: Response) => {
                 populate: { path: "author", select: "username avatar" },
             });
 
-        return res.json(comments);
+        return sendSuccess(res, comments);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al obtener los comentarios",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 export const createComment = async (req: Request, res: Response) => {
@@ -87,12 +82,9 @@ export const createComment = async (req: Request, res: Response) => {
             }
         }
 
-        return res.status(201).json(newComment);
+        return sendSuccess(res, newComment, "Comentario creado", 201);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al crear el comentario",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -102,13 +94,13 @@ export const deleteComment = async (req: Request, res: Response) => {
         const comment = await Comment.findByIdAndDelete(id);
 
         if (!comment) {
-            return res.status(400).json({ error: "Comentario no encontrado" });
+            return sendError(res, "Comentario no encontrado", 404);
         }
 
         await Comment.deleteMany({ parentComment: id });
 
-        return res.json({ success: true, comment });
+        return sendSuccess(res, comment);
     } catch (error) {
-        return res.status(500).json({ error: "Error al eliminar el comentario", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
