@@ -5,6 +5,7 @@ import { Notification } from "../notifications/notifications.model.js";
 
 export const getUpdatesByTrip = async (req: Request, res: Response) => {
     try {
+        console.log("HOLA")
         const { tripId } = req.params;
         const updates = await Update.find({ tripId })
         .sort({ createdAt: -1 });
@@ -18,7 +19,7 @@ export const createUpdate = async (req: Request, res: Response) => {
     try {
         const newUpdate = await Update.create(req.body);
 
-        const trip = await Trip.findById(newUpdate.tripId);
+        const trip = await Trip.findById(newUpdate.tripId).lean();
         if (trip && trip.owner.toString() !== newUpdate.userId.toString()) {
             await Notification.create({
                 recipient: trip.owner,

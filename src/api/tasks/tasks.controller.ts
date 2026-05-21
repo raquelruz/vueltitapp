@@ -5,8 +5,8 @@ import { Notification } from "../notifications/notifications.model.js";
 
 export const getTasksByTrip = async (req: Request, res: Response) => {
     try {
-        const { dreamId } = req.params;
-        const tasks = await Task.find({ dreamId }).populate("assignedTo", "username avatar").sort("order");
+        const { tripId } = req.params;
+        const tasks = await Task.find({ tripId }).populate("assignedTo", "username avatar").sort("order");
         return res.json(tasks);
     } catch (error) {
         return res.status(500).json({ error: "Error al obtener las tareas", message: (error as Error).message });

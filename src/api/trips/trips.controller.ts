@@ -6,6 +6,7 @@ import { Activity } from "../activity/activity.model.js";
 import { Comment } from "../comments/comments.model.js";
 import { Task } from "../tasks/tasks.model.js";
 import { Notification } from "../notifications/notifications.model.js";
+import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getAllTrips = async (req: Request, res: Response) => {
     try {
@@ -22,9 +23,9 @@ export const getAllTrips = async (req: Request, res: Response) => {
                 },
             });
 
-        return res.json(trips);
-    } catch (error: Error | unknown) {
-        return res.status(500).json({ error: "Error al obtener los viajes.", message: (error as Error).message });
+        return sendSuccess(res, trips);
+    } catch (error) {
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -37,11 +38,9 @@ export const getTripsByUser = async (req: Request, res: Response) => {
             .populate("tasks", "title isCompleted assignedTo")
             .populate("comments", "author text");
 
-        res.json(trips);
+        return sendSuccess(res, trips);
     } catch (error) {
-        return res
-            .status(500)
-            .json({ error: "Error al obtener los viajes del usuario", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -53,9 +52,10 @@ export const getMyTrips = async (req: Request, res: Response) => {
             .populate("members", "username avatar")
             .populate("tasks", "title isCompleted assignedTo")
             .populate("comments", "author text");
-        return res.json(trips);
+
+        return sendSuccess(res, trips);
     } catch (error) {
-        return res.status(500).json({ error: "Error al obtener tus viajes", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -69,12 +69,12 @@ export const getOneTrip = async (req: Request, res: Response) => {
             .populate("comments", "author text");
 
         if (!trip) {
-            return res.status(404).json({ error: "Viaje no encontrado" });
+            return sendError(res, "Trip no encontrado", 404);
         }
 
-        return res.json(trip);
+        return sendSuccess(res, trip);
     } catch (error) {
-        return res.status(500).json({ error: "Error al obtener el viaje", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -82,9 +82,10 @@ export const createTrip = async (req: Request, res: Response) => {
     try {
         const tripData = req.body;
         const newTrip = await Trip.create(tripData);
-        return res.status(201).json(newTrip);
+
+        return sendSuccess(res, newTrip, "Viaje creado", 201);
     } catch (error) {
-        return res.status(500).json({ error: "Error al crear el viaje", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -97,7 +98,7 @@ export const editTrip = async (req: Request, res: Response) => {
         });
 
         if (!trip) {
-            return res.status(404).json({ error: "Viaje no encontrado" });
+            return sendError(res, "Viaje no encontrado", 404);
         }
 
         // NOTIFICACIÓN: viaje completado
@@ -119,12 +120,9 @@ export const editTrip = async (req: Request, res: Response) => {
             }
         }
 
-        return res.json(trip);
+        return sendSuccess(res, trip);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al editar el viaje",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -134,7 +132,7 @@ export const deleteTrip = async (req: Request, res: Response) => {
         const trip = await Trip.findByIdAndDelete(id);
 
         if (!trip) {
-            return res.status(404).json({ error: "Viaje no encontrado" });
+            return sendError(res, "Viaje no encontrado", 404);
         }
 
         await Itinerary.deleteMany({ tripId: id });
@@ -143,8 +141,8 @@ export const deleteTrip = async (req: Request, res: Response) => {
         await Task.deleteMany({ tripId: id });
         await Comment.deleteMany({ targetId: id });
 
-        return res.json({ success: true, trip });
+        return sendSuccess(res, trip);
     } catch (error) {
-        return res.status(500).json({ error: "Error al eliminar el viaje", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
