@@ -23,7 +23,7 @@ export const getAllTrips = async (req: Request, res: Response) => {
                 },
             });
 
-        return sendSuccess(res, trips);
+        return sendSuccess(res, { trips, requestInfo: (req as any).requestInfo });
     } catch (error) {
         return sendError(res, (error as Error).message, 500);
     }
