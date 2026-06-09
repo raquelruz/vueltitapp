@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Day } from "./days.model.js";
-import { Activity } from "../activity/activity.model.js";
+import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getDaysByItinerary = async (req: Request, res: Response) => {
     try {
@@ -11,13 +11,9 @@ export const getDaysByItinerary = async (req: Request, res: Response) => {
             .populate("activities")   
             .sort("order");
 
-        return res.json(days);
-
+        return sendSuccess(res, days);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al obtener los días del itinerario",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -25,13 +21,9 @@ export const createDay = async (req: Request, res: Response) => {
     try {
         const newDay = await Day.create(req.body);
 
-        return res.status(201).json(newDay);
-
+        return sendSuccess(res, newDay, "Día creado", 201);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al crear el día",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -44,18 +36,12 @@ export const editDay = async (req: Request, res: Response) => {
         });
 
         if (!day) {
-            return res.status(404).json({
-                error: "Día no encontrado",
-            });
+            return sendError(res, "Día no encontrado", 404);
         }
 
-        return res.json(day);
-
+        return sendSuccess(res, day);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al editar el día",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -66,16 +52,11 @@ export const deleteDay = async (req: Request, res: Response) => {
         const day = await Day.findByIdAndDelete(id);
 
         if (!day) {
-            return res.status(404).json({
-                error: "Día no encontrado",
-            });
+            return sendError(res, "Día no encontrado", 404);
         }
 
-        return res.json({ success: true, day });
+        return sendSuccess(res, day);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al eliminar el día",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };

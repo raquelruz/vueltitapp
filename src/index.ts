@@ -1,5 +1,5 @@
 // Express
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import db from "./config/db.js";
@@ -14,6 +14,9 @@ import dns from "dns";
 import { notificationRoutes } from "./api/notifications/notifications.routes.js";
 import { commentRoutes } from "./api/comments/comments.routes.js";
 import { taskRoutes } from "./api/tasks/tasks.routes.js";
+import { updateRoutes } from "./api/updates/updates.routes.js";
+import { errorHandler, notFoundHandler } from "./utils/error.middleware.js";
+import { requestLogger } from "./middlewares/global.middlewares.js";
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -28,6 +31,9 @@ app.use(express.json());
 // CORS. Decide quién pasa y quien no.
 app.use(cors());
 
+// Middleware global
+app.use(requestLogger)
+
 // Crea la ruta /
 app.get("/", (req: Request, res: Response) => {
     console.log(process.env.MONGO_URI);
@@ -40,8 +46,16 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/itinerary", itineraryRoutes);
 app.use("/api/days", dayRoutes);
 app.use("/api/activities", activityRoutes);
-app.use("/api/comments", commentRoutes)
-app.use("/api/notifications", notificationRoutes)
+app.use("/api/comments", commentRoutes);
+app.use("/api/updates", updateRoutes);
+app.use("/api/notifications", notificationRoutes);
+
+
+// Captura de rutas no encontradas
+app.use(notFoundHandler);
+
+// Manejador global de errores
+app.use(errorHandler);
 
 
 // Crea el servidor

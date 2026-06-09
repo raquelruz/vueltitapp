@@ -2,23 +2,26 @@ import { Request, Response } from "express";
 import { Task } from "./tasks.model.js";
 import { Trip } from "../trips/trips.model.js";
 import { Notification } from "../notifications/notifications.model.js";
+import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getTasksByTrip = async (req: Request, res: Response) => {
     try {
-        const { dreamId } = req.params;
-        const tasks = await Task.find({ dreamId }).populate("assignedTo", "username avatar").sort("order");
-        return res.json(tasks);
+        const { tripId } = req.params;
+        const tasks = await Task.find({ tripId }).populate("assignedTo", "username avatar").sort("order");
+
+        return sendSuccess(res, tasks);
     } catch (error) {
-        return res.status(500).json({ error: "Error al obtener las tareas", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
 export const createTask = async (req: Request, res: Response) => {
     try {
         const newTask = await Task.create(req.body);
-        return res.status(201).json(newTask);
+
+        return sendSuccess(res, newTask, "Tarea creada", 201);
     } catch (error) {
-        return res.status(500).json({ error: "Error al crear la tarea", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -28,7 +31,7 @@ export const toggleTask = async (req: Request, res: Response) => {
         const task = await Task.findById(id);
 
         if (!task) {
-            return res.status(404).json({ error: "Tarea no encontrada" });
+            return sendError(res, "Tarea no encontrada", 404);
         }
 
         task.isCompleted = !task.isCompleted;
@@ -52,9 +55,9 @@ export const toggleTask = async (req: Request, res: Response) => {
             }
         }
 
-        return res.json(task);
+        return sendSuccess(res, task);
     } catch (error) {
-        return res.status(500).json({ error: "Error al alternar la tarea", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -64,12 +67,12 @@ export const editTask = async (req: Request, res: Response) => {
         const task = await Task.findByIdAndUpdate(id, req.body, { new: true });
 
         if (!task) {
-            return res.status(404).json({ error: "Tarea no encontrada" });
+            return sendError(res, "Tarea no encontrada", 404);
         }
 
-        return res.json(task);
+        return sendSuccess(res, task);
     } catch (error) {
-        return res.status(500).json({ error: "Error al editar la tarea", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -79,11 +82,11 @@ export const deleteTask = async (req: Request, res: Response) => {
         const task = await Task.findByIdAndDelete(id);
 
         if (!task) {
-            return res.status(404).json({ error: "Tarea no encontrada" });
+            return sendError(res, "Tarea no encontrada", 404);
         }
 
-        return res.json({ success: true, task });
+        return sendSuccess(res, task);
     } catch (error) {
-        return res.status(500).json({ error: "Error al eliminar la tarea", message: (error as Error).message });
+        return sendError(res, (error as Error).message, 500);
     }
 };

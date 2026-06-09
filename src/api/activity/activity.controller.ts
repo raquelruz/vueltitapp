@@ -1,23 +1,20 @@
 import { Request, Response } from "express";
 import { Activity } from "./activity.model.js";
+import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getActivitiesByDay = async (req: Request, res: Response) => {
     try {
         const { dayId } = req.params;
 
         const activities = await Activity.find({ dayId })
-            .populate("dayId", "title date") 
+            .populate("dayId", "title date")
             // .populate("members", "username avatar")
             .populate("comments", "author text")
             .sort({ time: 1 });
 
-        return res.json(activities);
-
+        return sendSuccess(res, activities);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al obtener actividades",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -28,20 +25,15 @@ export const getActivityById = async (req: Request, res: Response) => {
         const activity = await Activity.findById(id)
             .populate("dayId", "title date")
             .populate("members", "username avatar")
-            .populate("comments", "author text")
+            .populate("comments", "author text");
 
         if (!activity) {
-            return res.status(404).json({
-                error: "Actividad no encontrada",
-            });
+            return sendError(res, "Actividad no encontrada", 404);
         }
 
-        return res.json(activity);
-
+        return sendSuccess(res, activity);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al obtener actividad",
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -49,17 +41,14 @@ export const createActivity = async (req: Request, res: Response) => {
     try {
         const { dayId } = req.params;
 
-        const activity = await Activity.create({
+        const newActivity = await Activity.create({
             ...req.body,
             dayId,
         });
 
-        return res.status(201).json(activity);
-
+        return sendSuccess(res, newActivity, "Actividad creada", 201);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al crear actividad",
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -70,17 +59,12 @@ export const editActivity = async (req: Request, res: Response) => {
         const activity = await Activity.findByIdAndUpdate(id, req.body, { new: true });
 
         if (!activity) {
-            return res.status(404).json({
-                error: "Actividad no encontrada",
-            });
+            return sendError(res, "Actividad no encontrada", 404);
         }
 
-        return res.json(activity);
+        return sendSuccess(res, activity);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al actualizar actividad",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
 
@@ -91,16 +75,11 @@ export const deleteActivity = async (req: Request, res: Response) => {
         const activity = await Activity.findByIdAndDelete(id);
 
         if (!activity) {
-            return res.status(404).json({
-                error: "Actividad no encontrada",
-            });
+            return sendError(res, "Actividad no encontrada", 404);
         }
 
-        return res.json({ success: true, activity });
+        return sendSuccess(res, activity);
     } catch (error) {
-        return res.status(500).json({
-            error: "Error al eliminar actividad",
-            message: (error as Error).message,
-        });
+        return sendError(res, (error as Error).message, 500);
     }
 };
