@@ -6,7 +6,7 @@ export const validateTrip = (req: Request, res: Response, next: NextFunction) =>
     const { title, owner, country, city, startDate, endDate } = req.body as TripType;
 
     if (!title || title.length < 3) {
-        return sendError(res, "El título del viaje debe contener al menos 4 caracteres")
+        return sendError(res, "El título del viaje debe contener al menos 3 caracteres", 400)
     };
 
     if (!owner) {
@@ -23,15 +23,15 @@ export const validateTrip = (req: Request, res: Response, next: NextFunction) =>
 
     if (!startDate) {
         return sendError(res, "Debes indicar la fecha de inicio del viaje", 400)
-    }
+    };
+
+        if (!endDate) {
+        return sendError(res, "Debes indicar la fecha final del viaje", 400)
+    };
 
     if (new Date(startDate) > new Date(endDate)) {
         return sendError(res, "La fecha de inicio debe ser anterior a la fecha de final", 400)
-    }
-
-    if (!endDate) {
-        return sendError(res, "Debes indicar la fecha final del viaje")
-    }
+    };
 
     return next();
 }
