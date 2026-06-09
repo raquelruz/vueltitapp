@@ -16,6 +16,7 @@ import { commentRoutes } from "./api/comments/comments.routes.js";
 import { taskRoutes } from "./api/tasks/tasks.routes.js";
 import { updateRoutes } from "./api/updates/updates.routes.js";
 import { errorHandler, notFoundHandler } from "./utils/error.middleware.js";
+import { requestLogger } from "./middlewares/global.middlewares.js";
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -29,6 +30,9 @@ app.use(express.json());
 
 // CORS. Decide quién pasa y quien no.
 app.use(cors());
+
+// Middleware global
+app.use(requestLogger)
 
 // Crea la ruta /
 app.get("/", (req: Request, res: Response) => {
