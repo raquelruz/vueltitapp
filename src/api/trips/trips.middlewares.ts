@@ -1,0 +1,37 @@
+import { NextFunction, Request, Response } from "express";
+import { TripType } from "./trips.types.js";
+import { sendError } from "../../utils/response.utils.js";
+
+export const validateTrip = (req: Request, res: Response, next: NextFunction) => {
+    const { title, owner, country, city, startDate, endDate } = req.body as TripType;
+
+    if (!title || title.length < 3) {
+        return sendError(res, "El título del viaje debe contener al menos 4 caracteres")
+    };
+
+    if (!owner) {
+        return sendError(res, "No se ha podido identificar quién organiza este viaje", 400)
+    };
+
+    if (!country) {
+        return sendError(res, "Debes seleccionar un país de destino", 400)
+    };
+
+    if (!city) {
+        return sendError(res, "Debes seleccionar una ciudad de destino", 400)
+    };
+
+    if (!startDate) {
+        return sendError(res, "Debes indicar la fecha de inicio del viaje", 400)
+    }
+
+    if (new Date(startDate) > new Date(endDate)) {
+        return sendError(res, "La fecha de inicio debe ser anterior a la fecha de final", 400)
+    }
+
+    if (!endDate) {
+        return sendError(res, "Debes indicar la fecha final del viaje")
+    }
+
+    return next();
+}
