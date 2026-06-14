@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        Segoe UI,
+        Roboto,
+        Arial;
+    /* @apply bg-brand-bg; */
+}
+
+@theme {
+    --font-landing: "Open Sans", sans-serif;
+    --font-title: "Playfair Display", sans-serif;
+
+    --text-h1: 48px;
+    --text-h2: 30px;
+    --text-h3: 28px;
+    --text-h4: 24px;
+    --text-h5: 20px;
+    --text-h6: 16px;
+
+    /* 🎨 Paleta de colores - Azul y Cian */
+    --color-primary: #126782;
+    --color-primary-light: #219ebc;
+    --color-secondary: #fb8500;
+
+    --color-bg-light: #f8fafc;
+    --color-bg-dark: #0e172b;
+    --color-bg-medium: #1b273b;
+
+    /* 🎨 Colores de estado */
+    --color-success: #5fad56;
+    --color-warning: #faa307;
+    --color-error: #d00000;
+    --color-info: #00a7e1;
+}
+
+/* ============================================
+TIPOGRAFÍA - MOBILE FIRST
+============================================ */
+
+h1 {
+    @apply text-h1/[125%] font-bold;
+    font-size: clamp(24px, 6vw, 48px);
+}
+
+h2 {
+    @apply text-h2/[125%] font-bold;
+    font-size: clamp(20px, 5vw, 30px);
+}
+
+h3 {
+    @apply text-h3/[125%] font-bold;
+    font-size: clamp(18px, 4.5vw, 28px);
+}
+
+h4 {
+    @apply text-h4/[125%] font-bold;
+    font-size: clamp(16px, 4vw, 24px);
+}
+
+h5 {
+    @apply text-h5/[125%] font-bold;
+    font-size: clamp(14px, 3.5vw, 20px);
+}
+
+h6 {
+    @apply text-h6/[125%] font-bold;
+    font-size: clamp(12px, 3vw, 16px);
+}
+
+/* ============================================
+ESTILOS GLOBALES - MOBILE FIRST
+============================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-light);
+}
