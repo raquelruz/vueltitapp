@@ -44,8 +44,8 @@ export const LoginPage = () => {
                             <span className="text-lg font-semibold text-primary">VueltitApp</span>
                         </Link>
 
-                        <h2 className=" font-bold text-gray-900">Únete a la aventura</h2>
-                        <p className="text-gray-600 text-sm">Regístrate para empezar a conectar</p>
+                        <h2 className=" font-bold text-gray-900">Bienvenido de nuevo</h2>
+                        <p className="text-gray-600 text-sm">La aventura te espera. Ingresa tus datos.</p>
 
                         {error && <div className="text-error text-sm pb-3 mb-4">{error}</div>}
                     </div>
