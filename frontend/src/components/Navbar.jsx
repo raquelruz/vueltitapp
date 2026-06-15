@@ -129,7 +129,7 @@ export const Navbar = () => {
                                     key={link.path}
                                     to={link.path}
                                     onClick={closeMenu}
-                                    className="px-3 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 flex items-center gap-2.5"
+                                    className="px-3 py-3 rounded-lg text-sm font-medium text-text-secondary hover:text-primary hover:bg-white/10 flex items-center gap-2.5"
                                 >
                                     <span>{link.icon}</span>
                                     <span>{link.label}</span>
@@ -165,16 +165,11 @@ export const Navbar = () => {
                                         handleLogout();
                                         closeMenu();
                                     }}
-                                    className="px-3 py-3 rounded-xl text-sm font-medium text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20"
+                                    className="px-3 py-3 rounded-xl text-sm font-medium text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20"
                                 >
                                     Cerrar sesión
                                 </button>
                             )}
-
-                            {/* THEME BUTTON MOBILE (OPCIONAL PERO RECOMENDADO) */}
-                            <div className="px-3 pt-2">
-                                <ThemeBtn />
-                            </div>
                         </div>
                     </div>
                 )}
