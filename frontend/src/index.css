@@ -13,13 +13,22 @@ body {
         Segoe UI,
         Roboto,
         Arial;
-    /* @apply bg-brand-bg; */
 }
 
+/* ============================================
+THEME
+============================================ */
+
 @theme {
+    /* =========================
+        FONTS
+    ========================= */
     --font-landing: "Open Sans", sans-serif;
     --font-title: "Playfair Display", sans-serif;
 
+    /* =========================
+        TYPOGRAPHY SCALE
+    ========================= */
     --text-h1: 48px;
     --text-h2: 30px;
     --text-h3: 28px;
@@ -27,20 +36,58 @@ body {
     --text-h5: 20px;
     --text-h6: 16px;
 
-    /* 🎨 Paleta de colores - Azul y Cian */
-    --color-primary: #126782;
-    --color-primary-light: #219ebc;
-    --color-secondary: #fb8500;
+    /* =========================
+        BRAND COLORS (NEW)
+    ========================= */
 
-    --color-bg-light: #f8fafc;
-    --color-bg-dark: #0e172b;
-    --color-bg-medium: #1b273b;
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-primary-light: #3B82F6;
 
-    /* 🎨 Colores de estado */
-    --color-success: #5fad56;
-    --color-warning: #faa307;
-    --color-error: #d00000;
-    --color-info: #00a7e1;
+    --color-secondary: #f97316;
+    --color-accent: #fb923c;
+
+    /* BACKGROUND COLOR */
+    --color-bg-primary: #0a0f1c;
+    --color-bg-secondary: #111827;
+    --color-bg-card: #1f2937;
+    --color-bg-soft: #0f172a;
+
+    /* TEXT SYSTEM */
+    --color-text: #f9fafb;
+    --color-text-secondary: #9ca3af;
+    --color-text-muted: #6b7280;
+    --color-text-dark: #111827;
+
+    /* UI SYSTEM */
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-hover: rgba(249, 115, 22, 0.12);
+
+    /* STATUS COLORS */
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
+}
+
+/* ============================================
+LIGHT MODE
+============================================ */
+
+[data-theme="light"] {
+
+    --color-bg-primary: #F8FAFC;
+    --color-bg-secondary: #FFFFFF;
+    --color-bg-card: #ebebeb;
+    --color-bg-soft: #F1F5F9;
+
+    --color-text: #0F172A;
+    --color-text-secondary: #334155;
+    --color-text-muted: #64748B;
+
+    --color-border: rgba(15, 23, 42, 0.08);
+
+    --color-hover: rgba(249, 115, 22, 0.08);
 }
 
 /* ============================================
@@ -78,29 +125,10 @@ h6 {
 }
 
 /* ============================================
-ESTILOS GLOBALES - MOBILE FIRST
+GLOBAL STYLES
 ============================================ */
 
 html {
     scroll-behavior: smooth;
 }
 
-
-/* Scrollbar personalizado */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--color-bg-light);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--color-primary);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary-light);
-}
