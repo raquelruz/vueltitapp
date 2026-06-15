@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegCompass, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../auth/AuthContext";
 
 export const LoginPage = () => {
+    const { login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [form, setForm] = useState({ email: "", password: "" });
@@ -12,8 +14,8 @@ export const LoginPage = () => {
 
     const from = location.state?.from?.pathname || "/";
 
-    const submit = async (e) => {
-        e.preventDefault();
+    const submit = async (event) => {
+        event.preventDefault();
         setError(null);
         setLoading(true);
         try {

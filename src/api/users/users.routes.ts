@@ -3,8 +3,8 @@ import { createUser, deleteUser, editUser, getAllUsers, getLogin, getOneUser, ge
 
 export const userRoutes: Router = Router();
 
-userRoutes.get("/register", getRegister);
-userRoutes.get("/login", getLogin);
+// userRoutes.get("/register", getRegister);
+// userRoutes.get("/login", getLogin);
 
 userRoutes.get("/", getAllUsers);
 userRoutes.get("/:id", getOneUser);

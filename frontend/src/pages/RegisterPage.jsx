@@ -4,15 +4,18 @@ import { FaRegCompass, FaRegUser } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { LuUser } from "react-icons/lu";
+import { useAuth } from "../auth/AuthContext";
 
 
 export const RegisterPage = () => {
+    const { register } = useAuth();
     const navigate = useNavigate();
     const [form, setForm] = useState({
         username: "",
         email: "",
         password: "",
-        fullName: "",
+        name: "",
+        surname: "",
         role: "user",
     });
     const [error, setError] = useState(null);
@@ -58,7 +61,7 @@ export const RegisterPage = () => {
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={submit} classname="grid gap-3">
+                    <form onSubmit={submit} className="grid gap-3">
                         <label className="text-sm font-semibold text-gray-700 block mb-2">Nombre de usuario</label>
                         <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -107,7 +110,7 @@ export const RegisterPage = () => {
                             />
                         </div>
 
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Nombre completo</label>
+                        <label className="text-sm font-semibold text-gray-700 block mb-2">Nombre</label>
                         <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                                 <LuUser />
@@ -115,9 +118,25 @@ export const RegisterPage = () => {
 
                             <input
                                 type="text"
-                                placeholder="Juan Pérez"
-                                value={form.fullName}
-                                onChange={(event) => setForm({ ...form, fullName: event.target.value })}
+                                placeholder="Juan"
+                                value={form.name}
+                                onChange={(event) => setForm({ ...form, name: event.target.value })}
+                                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-text-primary-light focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-opacity-20 transition-all text-sm"
+                                required
+                            />
+                        </div>
+
+                        <label className="text-sm font-semibold text-gray-700 block mb-2">Apellidos</label>
+                        <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <LuUser />
+                            </span>
+
+                            <input
+                                type="text"
+                                placeholder="Pérez"
+                                value={form.surname}
+                                onChange={(event) => setForm({ ...form, surname: event.target.value })}
                                 className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-text-primary-light focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-opacity-20 transition-all text-sm"
                                 required
                             />
