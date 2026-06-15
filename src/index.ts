@@ -17,6 +17,7 @@ import { taskRoutes } from "./api/tasks/tasks.routes.js";
 import { updateRoutes } from "./api/updates/updates.routes.js";
 import { errorHandler, notFoundHandler } from "./utils/error.middleware.js";
 import { requestLogger } from "./middlewares/global.middlewares.js";
+import { authRoutes } from "./api/auth/auth.routes.js";
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -41,6 +42,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/trips", tripRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/itinerary", itineraryRoutes);

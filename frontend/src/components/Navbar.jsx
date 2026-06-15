@@ -1,7 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHome, FaSearch, FaRegUser, FaRegCompass } from "react-icons/fa";
 import { MdCardTravel } from "react-icons/md";
+import { useAuth } from "../auth/AuthContext";
 
 const publicLinks = [
     { path: "/", label: "Inicio", icon: <FaHome /> },
@@ -12,6 +13,9 @@ const publicLinks = [
 
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { user, logout } = useAuth();
+
+    const isAuthenticated = !!user;
 
     const closeMenu = useCallback(() => {
         setIsOpen(false);
@@ -20,6 +24,11 @@ export const Navbar = () => {
     const toggleMenu = useCallback(() => {
         setIsOpen((prev) => !prev);
     }, []);
+
+    const handleLogout = useCallback(() => {
+        logout();
+        setIsOpen(false);
+    }, [logout]);
 
     return (
         <nav
@@ -42,7 +51,7 @@ export const Navbar = () => {
                         </span>
                     </Link>
 
-                    {/* Desktop Navigation */}
+                    {/* DESKTOP NAV */}
                     <div className="hidden lg:flex items-center gap-1">
                         {publicLinks.map((link) => (
                             <Link
@@ -58,25 +67,37 @@ export const Navbar = () => {
                         ))}
                     </div>
 
+                    {/* DESKTOP BUTTONS */}
                     <div className="flex items-center gap-2 md:gap-3">
-                        <Link
-                            to="/login"
-                            className="hidden md:flex items-center px-5 py-2.5 rounded-xl text-sm font-medium text-white border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                        >
-                            Iniciar sesión
-                        </Link>
+                        {!isAuthenticated ? (
+                            <>
+                                <Link
+                                    to="/login"
+                                    className="hidden md:flex items-center px-5 py-2.5 rounded-xl text-sm font-medium text-white border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
+                                >
+                                    Iniciar sesión
+                                </Link>
 
-                        <Link
-                            to="/register"
-                            className=" hidden md:flex items-center px-6 py-2.5 rounded-xl text-sm font-semibold  text-white shadow-lg hover:shadow-cyan-500/20 hover:-translate-y-0.5 transition-all duration-30 "
-                            style={{
-                                background: "linear-gradient(135deg, #0047AB 0%, #00D2FF 100%)",
-                            }}
-                        >
-                            Crear cuenta
-                        </Link>
+                                <Link
+                                    to="/register"
+                                    className="hidden md:flex items-center px-6 py-2.5 rounded-xl text-sm font-semibold text-white shadow-lg hover:-translate-y-0.5 transition-all"
+                                    style={{
+                                        background: "linear-gradient(135deg, #0047AB 0%, #00D2FF 100%)",
+                                    }}
+                                >
+                                    Crear cuenta
+                                </Link>
+                            </>
+                        ) : (
+                            <button
+                                onClick={handleLogout}
+                                className="hidden md:flex items-center px-5 py-2.5 rounded-xl text-sm font-medium text-white border border-red-500/20 bg-red-500/10 hover:bg-red-500/20 transition-all"
+                            >
+                                Cerrar sesión
+                            </button>
+                        )}
 
-                        {/* Mobile Menu Button */}
+                        {/* MOBILE MENU BUTTON */}
                         <button
                             onClick={toggleMenu}
                             className="lg:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
@@ -89,7 +110,7 @@ export const Navbar = () => {
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
+                {/* MOBILE MENU */}
                 {isOpen && (
                     <div className="lg:hidden border-t border-gray-700 py-3 animate-in fade-in duration-200">
                         <div className="flex flex-col gap-1">
@@ -105,28 +126,41 @@ export const Navbar = () => {
                                 </Link>
                             ))}
 
-                            {/* Divider */}
                             <div className="my-2 border-t border-gray-700" />
 
-                            {/* Auth Buttons in Mobile */}
-                            <Link
-                                to="/login"
-                                onClick={closeMenu}
-                                className="px-3 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
-                            >
-                                Iniciar sesión
-                            </Link>
+                            {/* AUTH BUTTONS MOBILE */}
+                            {!isAuthenticated ? (
+                                <>
+                                    <Link
+                                        to="/login"
+                                        onClick={closeMenu}
+                                        className="px-3 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10"
+                                    >
+                                        Iniciar sesión
+                                    </Link>
 
-                            <Link
-                                to="/register"
-                                onClick={closeMenu}
-                                className=" px-3 py-3 rounded-xl text-sm font-semibold  text-white transition-all duration-300"
-                                style={{
-                                    background: "linear-gradient(135deg, #0047AB 0%, #00D2FF 100%)",
-                                }}
-                            >
-                                Crear cuenta
-                            </Link>
+                                    <Link
+                                        to="/register"
+                                        onClick={closeMenu}
+                                        className="px-3 py-3 rounded-xl text-sm font-semibold text-white"
+                                        style={{
+                                            background: "linear-gradient(135deg, #0047AB 0%, #00D2FF 100%)",
+                                        }}
+                                    >
+                                        Crear cuenta
+                                    </Link>
+                                </>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        handleLogout();
+                                        closeMenu();
+                                    }}
+                                    className="px-3 py-3 rounded-xl text-sm font-medium text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 transition-all"
+                                >
+                                    Cerrar sesión
+                                </button>
+                            )}
                         </div>
                     </div>
                 )}
