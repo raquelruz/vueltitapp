@@ -62,6 +62,7 @@ THEME
     /* UI SYSTEM */
     --color-border: rgba(255, 255, 255, 0.08);
     --color-hover: rgba(249, 115, 22, 0.12);
+    --color-border-light: #CCCCCC;
 
     /* STATUS COLORS */
     --color-success: #22c55e;

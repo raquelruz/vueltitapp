@@ -122,7 +122,7 @@ export const Navbar = () => {
 
                 {/* MOBILE MENU */}
                 {isOpen && (
-                    <div className="lg:hidden border-t border-gray-700 py-3">
+                    <div className="lg:hidden border-t border-border-light py-3">
                         <div className="flex flex-col gap-1">
                             {publicLinks.map((link) => (
                                 <Link
@@ -136,14 +136,14 @@ export const Navbar = () => {
                                 </Link>
                             ))}
 
-                            <div className="my-2 border-t border-gray-700" />
+                            <div className="my-2 border-t border-border-light" />
 
                             {!isAuthenticated ? (
                                 <>
                                     <Link
                                         to="/login"
                                         onClick={closeMenu}
-                                        className="px-3 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10"
+                                        className="px-3 py-3 rounded-lg text-sm font-medium text-gray-30 hover:text-white hover:bg-white/10"
                                     >
                                         Iniciar sesión
                                     </Link>
