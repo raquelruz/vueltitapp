@@ -1,7 +1,7 @@
-import heroBg from "../src/assets/images/hero-bg.jpg";
+import heroBg from "../assets/images/hero-bg.jpg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { SearchBar } from "../src/components/SearchBar";
+import { SearchBar } from "../components/SearchBar";
 
 export const HeroSection = () => {
     return (
@@ -19,7 +19,7 @@ export const HeroSection = () => {
 
             <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/40 to-black/60" />
 
-            {/* Main Content */}
+            {/* MAIN CONTENT */}
 
             <div className="relative max-w-7xl mx-auto px-4 md:px-8 min-h-screen flex flex-col items-center justify-center">
                 <div className="mb-8 inline-block">
@@ -42,8 +42,6 @@ export const HeroSection = () => {
                     <SearchBar />
                 </div>
             </div>
-
-            {/* Scroll Indicator */}
 
             <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
