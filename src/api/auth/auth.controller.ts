@@ -9,14 +9,14 @@ const SALT_NUMBER = 10;
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { username, email, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!username || !email || !password) {
-            return sendError(res, "Nombre de usuario, email y contraseña son obligatorios", 400);
+        if (!email || !password) {
+            return sendError(res, "Correo electrónico y contraseña son obligatorios", 400);
         }
 
         // Encriptamos la contraseña antes de guardarla
-        const hashedPassword = await bcrypt.hash(password, SALT_NUMBER); // SALT NUMBER
+        const hashedPassword = await bcrypt.hash(password, SALT_NUMBER); 
 
         const newUser = await User.create({
             ...req.body,
@@ -29,7 +29,7 @@ export const register = async (req: Request, res: Response) => {
 
         // Generamos token también en el registro para poder hacer auto-login
         const token = jwt.sign(
-            { id: newUser.id, email: newUser.email, role: newUser.role },
+            { id: newUser.id, email: newUser.email, role: newUser.role, bio: newUser.bio },
             process.env.JWT_SECRET,
             { expiresIn: "2h" }
         );

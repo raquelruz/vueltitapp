@@ -10,28 +10,6 @@ interface CustomRequestTrips extends Request {
     };
 }
 
-export const addRequestInfo = (req: CustomRequestTrips, res: Response, next: NextFunction) => {
-    console.log("Middleware 1 - addRequestInfo");
-
-    req.requestInfo = {
-        timestamp: new Date().toISOString(),
-        method: req.method,
-        url: req.originalUrl,
-    };
-
-    next();
-};
-
-export const logRequestInfo = (req: CustomRequestTrips, res: Response, next: NextFunction) => {
-    console.log("Middleware 2 - logRequestInfo");
-
-    console.log("Método:", req.requestInfo?.method);
-    console.log("URL:", req.requestInfo?.url);
-    console.log("Timestamp:", req.requestInfo?.timestamp);
-
-    next();
-};
-
 export const validateTrip = (req: Request, res: Response, next: NextFunction) => {
     const { title, owner, country, city, startDate, endDate } = req.body as TripType;
 

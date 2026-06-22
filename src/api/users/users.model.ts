@@ -23,6 +23,12 @@ const userSchema: Schema<UserType> = new Schema(
             select: false, // Cuando hagas un .find() la contraseña no vendrá por defecto.
         },
 
+        role: {
+            type: String,
+            enum: ["admin", "user", "moderator"],
+            default: "user"
+        },
+
         name: {
             type: String,
         },

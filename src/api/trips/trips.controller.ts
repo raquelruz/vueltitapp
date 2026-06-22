@@ -8,24 +8,16 @@ import { Task } from "../tasks/tasks.model.js";
 import { Notification } from "../notifications/notifications.model.js";
 import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
-export const getAllTrips = async (req: Request, res: Response) => {
+export const getTrips = async (req: Request, res: Response) => {
     try {
-        const trips = await Trip.find({ visibility: "public" })
-            .populate("owner", "username avatar")
-            .populate("members", "username avatar")
-            .populate("itineraries", "title description")
-            .populate("tasks", "title")
-            .populate({
-                path: "comments",
-                populate: {
-                    path: "author",
-                    select: "username avatar text",
-                },
-            });
+        const trips = await Trip.find({ visibility: "public" });
 
-        return sendSuccess(res, { trips, requestInfo: (req as any).requestInfo });
+        console.log("🔥 TRIPS SIN FILTRO:", trips.length);
+
+        return res.json(trips); // 👈 IMPORTANTE: sin wrapper
     } catch (error) {
-        return sendError(res, (error as Error).message, 500);
+        console.error(error);
+        return res.status(500).json({ message: "error" });
     }
 };
 

@@ -1,10 +1,10 @@
 import { Router } from "express";
-import {  getAllTrips, getTripsByUser, getMyTrips,  getOneTrip, createTrip, editTrip, deleteTrip } from "./trips.controller.js";
-import { addRequestInfo, logRequestInfo, validateTrip } from "./trips.middlewares.js";
+import {  getTrips, getTripsByUser, getMyTrips,  getOneTrip, createTrip, editTrip, deleteTrip } from "./trips.controller.js";
+import { validateTrip } from "./trips.middlewares.js";
 
 export const tripRoutes: Router = Router();
 
-tripRoutes.get("/", [addRequestInfo, logRequestInfo] , getAllTrips);
+tripRoutes.get("/", getTrips);
 
 tripRoutes.get("/user/:userId", getTripsByUser);
 
