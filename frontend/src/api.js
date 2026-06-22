@@ -16,7 +16,8 @@ http.interceptors.request.use((config) => {
 // Desempaqueta el formato { status, message, data } devuelto por el backend
 http.interceptors.response.use(
     (response) => {
-        return response.data;
+        response.data = response.data.data;
+        return response;
     },
     (error) => {
         error.message = error.response.data.message;

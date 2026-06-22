@@ -12,12 +12,9 @@ export const getTrips = async (req: Request, res: Response) => {
     try {
         const trips = await Trip.find({ visibility: "public" });
 
-        console.log("🔥 TRIPS SIN FILTRO:", trips.length);
-
-        return res.json(trips); // 👈 IMPORTANTE: sin wrapper
+        return sendSuccess(res, trips); // 👈 CAMBIO CLAVE
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "error" });
+        return sendError(res, "error", 500);
     }
 };
 
