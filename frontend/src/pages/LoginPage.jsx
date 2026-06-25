@@ -29,7 +29,7 @@ export const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 flex items-center justify-center px-4 py-8">
+        <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 flex items-center justify-center px-4 py-8">
             <div className="w-full max-w-xl">
                 <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl p-8 md:p-10 border border-gray-100">
                     {/* Logo Section */}
