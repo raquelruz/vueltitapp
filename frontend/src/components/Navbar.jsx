@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaHome, FaSearch, FaRegUser, FaRegCompass } from "react-icons/fa";
 import { MdCardTravel } from "react-icons/md";
 import { useAuth } from "../auth/AuthContext";
-import { ThemeBtn } from "./buttons/ThemeBtn";
+import { ThemeBtn } from "./Buttons/ThemeBtn";
 
 const publicLinks = [
     { path: "/", label: "Inicio", icon: <FaHome /> },
@@ -33,7 +33,7 @@ export const Navbar = () => {
 
     return (
         <nav
-            className="sticky top-0 z-50 bg-gradient-to-r from-bg-primary via-bg-card to-bg-primary backdrop-blur-md shadow-2xl border-b"
+            className="sticky top-0 z-50 bg-linear-to-r from-bg-primary via-bg-card to-bg-primary backdrop-blur-md shadow-2xl border-b"
             style={{ borderColor: "rgba(255,255,255,0.1)" }}
         >
             <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -44,7 +44,7 @@ export const Navbar = () => {
                         <div
                             className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-300 group-hover:scale-105"
                             style={{
-                                background: "linear-gradient(135deg, #3B82F6 0%, #10B981 100%)",
+                                background: "linear-gradient(135deg, #3B82F6 0%, #00FFFF 100%)",
                             }}
                         >
                             <FaRegCompass className="text-xl" />
@@ -71,7 +71,7 @@ export const Navbar = () => {
                                 </span>
                                 <span>{link.label}</span>
 
-                                <span className="absolute left-3 right-3 -bottom-0.5 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left bg-text" />
+                                <span className="absolute left-3 right-3 -bottom-0.5 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left bg-text" />
                             </Link>
                         ))}
                     </div>
@@ -82,15 +82,14 @@ export const Navbar = () => {
                             <>
                                 <Link
                                     to="/login"
-                                    className="
-        hidden md:flex items-center px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 active:scale-95 bg-transparent text-text border-gray-300 hover:bg-bg-card hover:border-gray-40"
+                                    className="hidden md:flex items-center px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 active:scale-95 bg-transparent text-text border-gray-300 hover:bg-bg-card hover:border-gray-40"
                                 >
                                     Iniciar sesión
                                 </Link>
 
                                 <Link
                                     to="/register"
-                                    className="hidden md:flex items-center px-6 py-2.5 rounded-full text-sm font-semibold text-white shadow-md bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
+                                    className="hidden md:flex items-center px-6 py-2.5 rounded-full text-sm font-semibold text-white shadow-md bg-linear-to-r from-primary via-primary-light to-primary hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
                                 >
                                     Crear cuenta
                                 </Link>
@@ -104,7 +103,7 @@ export const Navbar = () => {
                             </button>
                         )}
 
-                        {/* THEME BUTTON (REUTILIZABLE) */}
+                        {/* THEME BUTTON */}
                         <ThemeBtn />
 
                         {/* MOBILE MENU BUTTON */}

@@ -8,24 +8,13 @@ import { Task } from "../tasks/tasks.model.js";
 import { Notification } from "../notifications/notifications.model.js";
 import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
-export const getAllTrips = async (req: Request, res: Response) => {
+export const getTrips = async (req: Request, res: Response) => {
     try {
-        const trips = await Trip.find({ visibility: "public" })
-            .populate("owner", "username avatar")
-            .populate("members", "username avatar")
-            .populate("itineraries", "title description")
-            .populate("tasks", "title")
-            .populate({
-                path: "comments",
-                populate: {
-                    path: "author",
-                    select: "username avatar text",
-                },
-            });
+        const trips = await Trip.find({ visibility: "public" });
 
-        return sendSuccess(res, { trips, requestInfo: (req as any).requestInfo });
+        return sendSuccess(res, trips); // 👈 CAMBIO CLAVE
     } catch (error) {
-        return sendError(res, (error as Error).message, 500);
+        return sendError(res, "error", 500);
     }
 };
 

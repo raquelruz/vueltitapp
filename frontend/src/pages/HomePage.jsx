@@ -1,11 +1,10 @@
-import { Navbar } from "../components/Navbar";
+import { HeroSection } from "../sections/HeroSection";
+import api from "../api";
 
 export const HomePage = () => {
     return (
         <>
-            <div>
-                <Navbar />
-            </div>
+            <HeroSection />
         </>
     );
 };
