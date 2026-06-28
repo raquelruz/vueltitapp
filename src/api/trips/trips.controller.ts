@@ -10,11 +10,34 @@ import { sendError, sendSuccess } from "../../utils/response.utils.js";
 
 export const getTrips = async (req: Request, res: Response) => {
     try {
-        const trips = await Trip.find({ visibility: "public" });
+        const { search, date } = req.query;
 
-        return sendSuccess(res, trips); // 👈 CAMBIO CLAVE
+        const filter: any = {
+            visibility: "public",
+        };
+
+        if (typeof search === "string" && search.trim() !== "") {
+            filter.$or = [
+                { city: { $regex: search, $options: "i" } },
+                { country: { $regex: search, $options: "i" } },
+                { title: { $regex: search, $options: "i" } },
+            ];
+        }
+
+        if (date && typeof date === "string" && date !== "undefined") {
+            const d = new Date(date);
+
+            if (!isNaN(d.getTime())) {
+                filter.startDate = { $lte: d };
+                filter.endDate = { $gte: d };
+            }
+        }
+
+        const trips = await Trip.find(filter);
+
+        return sendSuccess(res, trips);
     } catch (error) {
-        return sendError(res, "error", 500);
+        return sendError(res, (error as Error).message, 500);
     }
 };
 

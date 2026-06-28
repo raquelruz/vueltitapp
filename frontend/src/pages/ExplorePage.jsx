@@ -1,91 +1,133 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { TripsList } from "../components/TripsList";
 import api from "../api";
+import { CreateTripForm } from "../components/CreateTripForm";
+import { TripCard } from "../components/TripCard";
+import { ExploreHeader } from "../components/ExploreHeader";
 
 export const ExplorePage = () => {
     const [trips, setTrips] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [showForm, setShowForm] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [form, setForm] = useState({
+        title: "",
+        country: "",
+        city: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+        visibility: "public",
+    });
     const [searchParams] = useSearchParams();
-
     const search = searchParams.get("search") || "";
     const date = searchParams.get("date") || "";
 
+    // Cargar viajes con búsqueda y filtros
+    const loadTrips = async () => {
+        setLoading(true);
+
+        try {
+            const res = await api.get("/trips", {
+                params: { search, date },
+            });
+
+            // Filtrar solo viajes públicos
+            const publicTrips = (res.data || []).filter(
+                (trip) => trip.visibility === "public"
+            );
+
+            setTrips(publicTrips);
+        } catch (error) {
+            console.error("Error cargando viajes:", error);
+            setTrips([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchTrips = async () => {
-            setLoading(true);
-
-            try {
-                const res = await api.get("/trips", {
-                    params: { search, date },
-                });
-
-                setTrips(res.data || []);
-            } catch (err) {
-                console.error(err);
-                setTrips([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchTrips();
+        loadTrips();
     }, [search, date]);
 
-    if (loading) {
-        return <div className="text-center py-20">Cargando viajes...</div>;
-    }
+    // Crear nuevo viaje
+    const create = async (event) => {
+        event.preventDefault();
+        setSubmitting(true);
+
+        try {
+            await api.post("/trips", form);
+            setForm({
+                title: "",
+                country: "",
+                city: "",
+                startDate: "",
+                endDate: "",
+                description: "",
+                visibility: "public",
+            });
+            setShowForm(false);
+            loadTrips();
+        } catch (error) {
+            alert(error.message || "Error al crear el viaje");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    // Eliminar viaje
+    const remove = async (id) => {
+        if (!confirm("¿Eliminar este viaje? Se borrarán también sus tareas, comentarios y updates.")) {
+            return;
+        }
+
+        try {
+            await api.delete(`/trips/${id}`);
+            loadTrips();
+        } catch (error) {
+            alert(error.message || "Error al eliminar el viaje");
+        }
+    };
+
+    if (loading) return <p className="text-gray-500">Cargando viajes...</p>;
 
     return (
         <div className="min-h-screen bg-bg-primary">
             {/* HEADER */}
-            <div className="sticky top-0 z-20 bg-bg-primary backdrop-blur-xl border-b border-border">
-                <div className="max-w-7xl mx-auto px-6 py-6">
-                    <div className="text-center mb-5">
-                        <h1 className="text-2xl md:text-3xl font-semibold text-text">¿A dónde quieres viajar?</h1>
-
-                        <p className="text-sm text-text-secondary mt-1">Inspírate o busca tu próxima aventura</p>
-                    </div>
-
-                    {/* SEARCH (solo visual) */}
-                    <div className="flex justify-center">
-                        <div className="w-full max-w-2xl flex items-center bg-bg-primary border border-border rounded-full px-5 py-3 shadow-sm hover:shadow-md transition">
-                            <svg
-                                className="w-5 h-5 text-text-secondary mr-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-
-                            <input
-                                type="text"
-                                value={search}
-                                readOnly
-                                className="flex-1 outline-none text-text-secondary placeholder-gray-400"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ExploreHeader />
 
             {/* CONTENT */}
             <div className="max-w-7xl mx-auto px-8 py-10">
-                <div className="mb-6 flex justify-end px-4">
+                {/* BOTÓN CREAR */}
+                <div className="mb-6 flex justify-between items-center">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm text-sm text-gray-600">
                         <span className="w-2 h-2 rounded-full bg-primary"></span>
                         {trips.length} viajes encontrados
                     </div>
+                    <button
+                        onClick={() => setShowForm(!showForm)}
+                        className="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary-hover"
+                    >
+                        {showForm ? "Cancelar" : "+ Nuevo viaje"}
+                    </button>
                 </div>
 
-                <TripsList trips={trips} />
+                {/* FORMULARIO CREAR */}
+                {showForm && (
+                    <CreateTripForm
+                        form={form}
+                        setForm={setForm}
+                        onSubmit={create}
+                        submitting={submitting}
+                    />
+                )}
+
+                {/* LISTA DE VIAJES */}
+                {trips.length === 0 ? (
+                    <p className="text-gray-400">No hay viajes públicos todavía.</p>
+                ) : (
+                    <TripCard trips={trips} onDelete={remove} />
+                )}
             </div>
         </div>
     );

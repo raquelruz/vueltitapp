@@ -1,7 +1,7 @@
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useTheme } from "../../hooks/useTheme";
 
-export const ThemeBtn = ({ className = "" }) => {
+export const ThemeButton = ({ className = "" }) => {
     const { theme, toggleTheme } = useTheme();
 
     return (
