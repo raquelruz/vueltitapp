@@ -37,38 +37,92 @@ THEME
     --text-h6: 16px;
 
     /* =========================
-        BRAND COLORS (NEW)
+        BRAND COLORS
     ========================= */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+    --color-primary-950: #172554;
 
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-primary-light: #00AFDF;
-
-    --color-secondary: #f97316;
-    --color-accent: #fb923c;
+    --color-secondary-50: #fff7ed;
+    --color-secondary-100: #fee2d5;
+    --color-secondary-200: #fed7aa;
+    --color-secondary-300: #fdba74;
+    --color-secondary-400: #fb923c;
+    --color-secondary-500: #f97316;
+    --color-secondary-600: #ea580c;
+    --color-secondary-700: #c2410c;
+    --color-secondary-800: #9a3412;
+    --color-secondary-900: #7c2d12;
+    --color-secondary-950: #431407;
 
     /* BACKGROUND COLOR */
     --color-bg-primary: #0a0f1c;
     --color-bg-secondary: #111827;
+    --color-bg-tertiary: #1f2937;
     --color-bg-card: #1f2937;
-    --color-bg-soft: #0f172a;
+    --color-bg-overlay: rgba(10, 15, 28, 0.8);
+    
 
     /* TEXT SYSTEM */
-    --color-text: #f9fafb;
-    --color-text-secondary: #9ca3af;
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-text-tertiary: #9ca3af;
     --color-text-muted: #6b7280;
-    --color-text-dark: #111827;
 
     /* UI SYSTEM */
     --color-border: rgba(255, 255, 255, 0.08);
-    --color-hover: rgba(249, 115, 22, 0.12);
-    --color-border-light: #CCCCCC;
+    --color-border-light: rgba(255, 255, 255, 0.12);
 
     /* STATUS COLORS */
-    --color-success: #22c55e;
-    --color-warning: #f59e0b;
-    --color-error: #ef4444;
-    --color-info: #3b82f6;
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #145231;
+
+    --color-warning-50: #fffbeb;
+    --color-warning-100: #fef3c7;
+    --color-warning-200: #fde68a;
+    --color-warning-300: #fcd34d;
+    --color-warning-400: #fbbf24;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+    --color-warning-700: #b45309;
+    --color-warning-800: #92400e;
+    --color-warning-900: #78350f;
+    
+    --color-error-50: #fef2f2;
+    --color-error-100: #fee2e2;
+    --color-error-200: #fecaca;
+    --color-error-300: #fca5a5;
+    --color-error-400: #f87171;
+    --color-error-500: #ef4444;
+    --color-error-600: #dc2626;
+    --color-error-700: #b91c1c;
+    --color-error-800: #991b1b;
+    --color-error-900: #7f1d1d;
+
+    --color-info-50: #eff6ff;
+    --color-info-100: #dbeafe;
+    --color-info-200: #bfdbfe;
+    --color-info-300: #93c5fd;
+    --color-info-400: #60a5fa;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+    --color-info-700: #1d4ed8;
 }
 
 /* ============================================
@@ -76,19 +130,19 @@ LIGHT MODE
 ============================================ */
 
 [data-theme="light"] {
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-bg-tertiary: #f3f4f6;
+    --color-bg-card: #ffffff;
+    --color-bg-overlay: rgba(255, 255, 255, 0.8);
 
-    --color-bg-primary: #F8FAFC;
-    --color-bg-secondary: #FFFFFF;
-    --color-bg-card: #ebebeb;
-    --color-bg-soft: #F1F5F9;
-
-    --color-text: #0F172A;
-    --color-text-secondary: #334155;
-    --color-text-muted: #64748B;
+    --color-text-primary: #111827;
+    --color-text-secondary: #374151;
+    --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af;
 
     --color-border: rgba(15, 23, 42, 0.08);
-
-    --color-hover: rgba(249, 115, 22, 0.08);
+    --color-border-light: rgba(15, 23, 42, 0.12);
 }
 
 /* ============================================
