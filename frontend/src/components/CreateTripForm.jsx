@@ -1,5 +1,4 @@
-export const CreateTripForm = ({ form, setForm, onSubmit, submitting }) => {
-    return (
+export const CreateTripForm = ({ form, setForm, onSubmit, submitting, imageFile, setImageFile }) => {    return (
         <form
             onSubmit={onSubmit}
             className="bg-bg-card rounded-lg shadow p-6 mb-6 grid gap-4 md:grid-cols-2 border border-border"

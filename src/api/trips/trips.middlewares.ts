@@ -8,17 +8,19 @@ interface CustomRequestTrips extends Request {
         method: string;
         url: string;
     };
+    user?: any;
 }
 
-export const validateTrip = (req: Request, res: Response, next: NextFunction) => {
-    const { title, owner, country, city, startDate, endDate } = req.body as TripType;
+export const validateTrip = (req: CustomRequestTrips, res: Response, next: NextFunction) => {
+    const { title, country, city, startDate, endDate } = req.body as TripType;
+
+    // Validar que exista el usuario autenticado
+    if (!req.user?.id) {
+        return sendError(res, "No se ha podido identificar quién organiza este viaje", 401);
+    }
 
     if (!title || title.length < 3) {
         return sendError(res, "El título del viaje debe contener al menos 3 caracteres", 400);
-    }
-
-    if (!owner) {
-        return sendError(res, "No se ha podido identificar quién organiza este viaje", 400);
     }
 
     if (!country) {

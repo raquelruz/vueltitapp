@@ -1,5 +1,5 @@
 // Express
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import db from "./config/db.js";
@@ -18,6 +18,7 @@ import { updateRoutes } from "./api/updates/updates.routes.js";
 import { errorHandler, notFoundHandler } from "./utils/error.middleware.js";
 import { requestLogger } from "./middlewares/global.middlewares.js";
 import { authRoutes } from "./api/auth/auth.routes.js";
+import helmet from "helmet";
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -28,6 +29,8 @@ const PORT = process.env.PORT || 3000;
 
 // Coge la petición y la transforma a JSON
 app.use(express.json());
+
+app.use(helmet());
 
 // CORS. Decide quién pasa y quien no.
 app.use(cors());

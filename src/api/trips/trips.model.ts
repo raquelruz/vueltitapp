@@ -35,6 +35,8 @@ const tripSchema: Schema<TripType> = new Schema(
 
         visibility: { type: String, enum: ["public", "private"], default: "public" },
 
+        image: { type: String },
+
         status: { type: String, enum: ["pending", "completed"], default: "pending" },
     },
 

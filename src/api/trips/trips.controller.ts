@@ -92,10 +92,46 @@ export const getOneTrip = async (req: Request, res: Response) => {
 
 export const createTrip = async (req: Request, res: Response) => {
     try {
-        const tripData = req.body;
+        const userId = (req as any).user?._id || (req as any).user?.id;
+        
+        if (!userId) {
+            return sendError(res, "No se ha podido identificar quién organiza este viaje", 401);
+        }
+
+        console.log("File:", req.file); // DEBUG
+        
+        const tripData = {
+            ...req.body,
+            owner: userId,
+            image: req.file?.path || null, // ← Guarda la URL de Cloudinary
+        };
+
+        console.log("Trip data:", tripData); // DEBUG
+
         const newTrip = await Trip.create(tripData);
 
         return sendSuccess(res, newTrip, "Viaje creado", 201);
+    } catch (error) {
+        return sendError(res, (error as Error).message, 500);
+    }
+};
+
+// Sube la imagen del viaje a Cloudinary (vía Multer) y guarda su URL.
+export const updateTripImage = async (req: Request, res: Response) => {
+    try {
+        if (!req.file) {
+            return sendError(res, "No se ha enviado ninguna imagen", 400);
+        }
+
+        const { id } = req.params;
+        // req.file.path es la URL pública que devuelve Cloudinary.
+        const dream = await Trip.findByIdAndUpdate(id, { image: req.file.path }, { new: true });
+
+        if (!dream) {
+            return sendError(res, "Viaje no encontrado", 404);
+        }
+
+        return sendSuccess(res, dream, "Imagen actualizada");
     } catch (error) {
         return sendError(res, (error as Error).message, 500);
     }
