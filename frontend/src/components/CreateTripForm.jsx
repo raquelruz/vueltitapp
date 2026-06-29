@@ -7,7 +7,7 @@ export const CreateTripForm = ({ form, setForm, onSubmit, submitting }) => {
             <input
                 type="text"
                 value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                onChange={(event) => setForm({ ...form, title: event.target.value })}
                 placeholder="Título del viaje *"
                 className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text placeholder-text-muted"
                 required
@@ -17,7 +17,7 @@ export const CreateTripForm = ({ form, setForm, onSubmit, submitting }) => {
             <input
                 type="text"
                 value={form.country}
-                onChange={(e) => setForm({ ...form, country: e.target.value })}
+                onChange={(event) => setForm({ ...form, country: event.target.value })}
                 placeholder="País *"
                 className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text placeholder-text-muted"
                 required
@@ -26,32 +26,32 @@ export const CreateTripForm = ({ form, setForm, onSubmit, submitting }) => {
             <input
                 type="text"
                 value={form.city}
-                onChange={(e) => setForm({ ...form, city: e.target.value })}
+                onChange={(event) => setForm({ ...form, city: event.target.value })}
                 placeholder="Ciudad *"
-                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text placeholder-text-muted"
+                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text-muted placeholder-text-muted"
                 required
             />
 
             <input
                 type="date"
                 value={form.startDate}
-                onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text"
+                onChange={(event) => setForm({ ...form, startDate: event.target.value })}
+                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text-muted"
                 required
             />
 
             <input
                 type="date"
                 value={form.endDate}
-                onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text"
+                onChange={(event) => setForm({ ...form, endDate: event.target.value })}
+                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text-muted"
                 required
             />
 
             <select
                 value={form.visibility}
-                onChange={(e) => setForm({ ...form, visibility: e.target.value })}
-                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text"
+                onChange={(event) => setForm({ ...form, visibility: event.target.value })}
+                className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text-muted"
             >
                 <option value="public">Público</option>
                 <option value="private">Privado</option>
@@ -59,19 +59,31 @@ export const CreateTripForm = ({ form, setForm, onSubmit, submitting }) => {
 
             <textarea
                 value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                onChange={(event) => setForm({ ...form, description: event.target.value })}
                 placeholder="Descripción"
                 className="border border-border rounded px-4 py-2 text-sm bg-bg-secondary text-text placeholder-text-muted md:col-span-2 resize-none"
                 rows="3"
             />
 
-            <button
-                type="submit"
-                disabled={submitting}
-                className="bg-color-success text-white px-4 py-2 rounded text-sm hover:bg-green-600 disabled:opacity-60 md:col-span-2 font-medium transition"
-            >
-                {submitting ? "Creando viaje..." : "Crear viaje"}
-            </button>
+            <label className="text-sm text-text-secondary md:col-span-2">
+                Imagen (opcional)
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => setImageFile(event.target.files[0] || null)}
+                    className="block mt-1 w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                />
+            </label>
+
+            <div className="md:col-span-2 flex justify-center">
+                <button
+                    type="submit"
+                    disabled={submitting}
+                    className="bg-success-500 hover:bg-success-600 text-white px-12 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-60"
+                >
+                    {submitting ? "Creando viaje..." : "Crear viaje"}
+                </button>
+            </div>
         </form>
     );
 };
