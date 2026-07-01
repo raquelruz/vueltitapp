@@ -12,11 +12,11 @@ export const Navbar = () => {
     const { user, logout } = useAuth();
 
     const publicLinks = [
-    { path: "/", label: "Inicio", icon: <FaHome /> },
-    { path: "/explore", label: "Explorar", icon: <FaSearch /> },
+        { path: "/", label: "Inicio", icon: <FaHome /> },
+        { path: "/explore", label: "Explorar", icon: <FaSearch /> },
         { path: user ? `/my-trips/${user.id}` : "/login", label: "Mis viajes", icon: <MdCardTravel /> },
-    { path: "/profile", label: "Mi perfil", icon: <FaRegUser /> },
-];
+        { path: "/profile", label: "Mi perfil", icon: <FaRegUser /> },
+    ];
 
     const closeMenu = useCallback(() => {
         setIsOpen(false);
@@ -41,7 +41,9 @@ export const Navbar = () => {
                         </div>
                         <div className="flex flex-col leading-tight">
                             <span className="text-lg font-semibold tracking-tight text-text-primary">VueltitApp</span>
-                            <span className="text-xs tracking-widest uppercase text-text-muted font-medium">Comunidad viajera</span>
+                            <span className="text-xs tracking-widest uppercase text-text-muted font-medium">
+                                Comunidad viajera
+                            </span>
                         </div>
                     </Link>
 
@@ -50,9 +52,13 @@ export const Navbar = () => {
                             <RouterNavLink
                                 key={link.path}
                                 to={link.path}
-                                className={({ isActive }) => `relative px-3 py-2 text-sm font-medium flex items-center gap-1.5 group ${isActive ? 'text-primary' : 'text-text-primary'}`}
+                                className={({ isActive }) =>
+                                    `relative px-3 py-2 text-sm font-medium flex items-center gap-1.5 group ${isActive ? "text-primary" : "text-text-primary"}`
+                                }
                             >
-                                <span className="text-base opacity-70 group-hover:opacity-100 transition-opacity">{link.icon}</span>
+                                <span className="text-base opacity-70 group-hover:opacity-100 transition-opacity">
+                                    {link.icon}
+                                </span>
                                 <span>{link.label}</span>
                                 <span className="absolute left-3 right-3 -bottom-0.5 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left bg-text-primary" />
                             </RouterNavLink>
@@ -61,21 +67,21 @@ export const Navbar = () => {
 
                     <div className="flex items-center gap-2 md:gap-3">
                         {user && (
-                            <LogoutButton 
-                                baseClass="hidden md:inline-flex px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 active:scale-95" 
-                                onClick={handleLogout} 
+                            <LogoutButton
+                                baseClass="hidden md:inline-flex px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 active:scale-95"
+                                onClick={handleLogout}
                             />
                         )}
                         {!user && (
                             <>
-                                <Link 
-                                    to="/login" 
+                                <Link
+                                    to="/login"
                                     className="hidden md:inline-flex px-5 py-2.5 rounded-full text-sm font-medium border border-border text-text-primary hover:bg-bg-secondary transition-all duration-300 active:scale-95"
                                 >
                                     Iniciar sesión
                                 </Link>
-                                <Link 
-                                    to="/register" 
+                                <Link
+                                    to="/register"
                                     className="hidden md:inline-flex px-5 py-2.5 rounded-full text-sm font-medium text-white bg-linear-to-r from-primary-600 to-primary-500 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
                                 >
                                     Crear cuenta
@@ -98,7 +104,9 @@ export const Navbar = () => {
                     </div>
                 </div>
 
-                {isOpen && <MobileMenu links={publicLinks} closeMenu={closeMenu} user={user} handleLogout={handleLogout} />}
+                {isOpen && (
+                    <MobileMenu links={publicLinks} closeMenu={closeMenu} user={user} handleLogout={handleLogout} />
+                )}
             </div>
         </nav>
     );
