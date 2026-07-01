@@ -11,6 +11,7 @@ export type TripType = {
     startDate: Date;
     endDate: Date;
     description: string;
+    image: string;
     visibility: "public" | "private";
     status: "pending" | "completed";
 };
