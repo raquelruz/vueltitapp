@@ -7,16 +7,16 @@ import { ThemeButton } from "./Buttons/ThemeButton";
 import { MobileMenu } from "./MobileMenu";
 import { LogoutButton } from "./Buttons/LogoutButton";
 
-const publicLinks = [
-    { path: "/", label: "Inicio", icon: <FaHome /> },
-    { path: "/explore", label: "Explorar", icon: <FaSearch /> },
-    { path: "/my-trips", label: "Mis viajes", icon: <MdCardTravel /> },
-    { path: "/profile", label: "Mi perfil", icon: <FaRegUser /> },
-];
-
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { user, logout } = useAuth();
+
+    const publicLinks = [
+    { path: "/", label: "Inicio", icon: <FaHome /> },
+    { path: "/explore", label: "Explorar", icon: <FaSearch /> },
+        { path: user ? `/my-trips/${user.id}` : "/login", label: "Mis viajes", icon: <MdCardTravel /> },
+    { path: "/profile", label: "Mi perfil", icon: <FaRegUser /> },
+];
 
     const closeMenu = useCallback(() => {
         setIsOpen(false);
