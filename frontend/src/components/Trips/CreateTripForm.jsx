@@ -1,6 +1,51 @@
-export const CreateTripForm = ({ form, setForm, onSubmit, submitting, imageFile, setImageFile }) => {    return (
+import { useState } from "react";
+import api from "../../api";
+
+const emptyForm = {
+    title: "",
+    country: "",
+    city: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+    visibility: "public",
+};
+
+export const CreateTripForm = ({ onSuccess }) => {
+    const [form, setForm] = useState(emptyForm);
+    const [imageFile, setImageFile] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
+
+    const create = async (event) => {
+        event.preventDefault();
+        setSubmitting(true);
+
+        try {
+            const data = new FormData();
+            Object.entries(form).forEach(([key, value]) => data.append(key, value));
+
+            if (imageFile) {
+                data.append("image", imageFile);
+            }
+
+            await api.post("/trips", data);
+
+            setForm(emptyForm);
+            setImageFile(null);
+
+            if (onSuccess) {
+                onSuccess();
+            }
+        } catch (error) {
+            alert("Error al crear el viaje");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return (
         <form
-            onSubmit={onSubmit}
+            onSubmit={create}
             className="bg-bg-card rounded-lg shadow p-6 mb-6 grid gap-4 md:grid-cols-2 border border-border"
         >
             <input
@@ -80,7 +125,8 @@ export const CreateTripForm = ({ form, setForm, onSubmit, submitting, imageFile,
                     disabled={submitting}
                     className="bg-success-500 hover:bg-success-600 text-white px-12 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-60"
                 >
-                    {submitting ? "Creando viaje..." : "Crear viaje"}
+                    {submitting && "Creando viaje..."}
+                    {!submitting && "Crear viaje"}
                 </button>
             </div>
         </form>
