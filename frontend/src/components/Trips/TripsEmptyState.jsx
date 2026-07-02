@@ -17,7 +17,7 @@ export const TripsEmptyState = ({ variant = "none" }) => {
                 <MdCardTravel />
             </div>
             <h3 className="text-lg font-semibold text-text-primary mb-1">Todavía no tienes viajes</h3>
-            <p className="text-sm text-text-secondary max-w-sm mb-6">
+            <p className="text-sm text-text-primary max-w-sm mb-6">
                 Cuando organices tu primer viaje, aparecerá aquí con su destino, fechas y compañeros de ruta.
             </p>
             <Link

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
-import { getStampInfo } from "../utils/tripPhase";
+import { useAuth } from "../../auth/AuthContext";
+import { getStampInfo } from "../../utils/tripPhase";
 
 const stampTone = {
     upcoming: "border-info text-info bg-info/10",
@@ -22,9 +22,10 @@ export const TripCard = ({ trips, onDelete, showPhase = false }) => {
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 mt-12 px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-7 mt-12 px-4">
             {trips.map((trip) => {
                 const stamp = showPhase ? getStampInfo(trip) : null;
+                const canDelete = onDelete && user && trip.owner?.id === user.id;
 
                 return (
                     <Link
@@ -77,7 +78,7 @@ export const TripCard = ({ trips, onDelete, showPhase = false }) => {
                             {/* SELLO DE FASE (solo cuando showPhase=true, p.ej. en Mis Viajes) */}
                             {showPhase && (
                                 <div
-                                    className={`absolute bottom-4 right-4 w-14 h-14 rounded-full border-2 border-dashed flex items-center justify-center backdrop-blur-sm -rotate-12 ${stampTone[stamp.tone]}`}
+                                    className={`absolute top-4 left-4 w-14 h-14 rounded-full border-2 border-dashed flex items-center justify-center backdrop-blur-sm -rotate-12 ${stampTone[stamp.tone]}`}
                                 >
                                     <span className="text-[9px] font-bold uppercase tracking-wider leading-tight text-center px-1">
                                         {stamp.label}
@@ -85,14 +86,14 @@ export const TripCard = ({ trips, onDelete, showPhase = false }) => {
                                 </div>
                             )}
 
-                            {/* BOTÓN ELIMINAR */}
-                            {onDelete && user && trip.owner?.id === user.id && (
+                            {/* BOTÓN ELIMINAR — solo visible al hacer hover */}
+                            {canDelete && (
                                 <button
                                     onClick={(e) => {
                                         e.preventDefault();
                                         onDelete(trip.id);
                                     }}
-                                    className="absolute top-4 left-4 bg-red-500/90 hover:bg-red-600 backdrop-blur px-3 py-1 rounded-full text-xs font-semibold text-white transition-colors"
+                                    className="absolute top-4 left-4 bg-error/90 hover:bg-error backdrop-blur px-3 py-1 rounded-full text-xs font-semibold text-white transition-opacity duration-200 opacity-0 group-hover:opacity-100"
                                     title="Eliminar viaje"
                                 >
                                     ✕ Eliminar
@@ -102,19 +103,19 @@ export const TripCard = ({ trips, onDelete, showPhase = false }) => {
 
                         {/* CONTENT */}
                         <div className="p-5">
-                            <h3 className="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition">
+                            <h3 className="text-lg font-bold text-text group-hover:text-primary-500 transition">
                                 {trip.title}
                             </h3>
 
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-sm text-text-secondary mt-1">
                                 📍 {trip.city}, {trip.country}
                             </p>
 
                             {/* CTA */}
                             <div className="mt-4 flex justify-between items-center">
-                                <span className="text-xs text-gray-400">Plan de viaje</span>
+                                <span className="text-xs text-text-muted">Plan de viaje</span>
 
-                                <button className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition">
+                                <button className="text-sm font-medium text-primary-500 hover:text-color-primary-hover transition">
                                     Ver detalles →
                                 </button>
                             </div>

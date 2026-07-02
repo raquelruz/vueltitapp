@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import api from "../api";
-import { CreateTripForm } from "../components/CreateTripForm";
-import { TripCard } from "../components/TripCard";
+import { CreateTripForm } from "../components/Trips/CreateTripForm";
+import { TripCard } from "../components/Trips/TripCard";
 import { ExploreHeader } from "../components/ExploreHeader";
 import { useAuth } from "../auth/AuthContext";
 
@@ -13,17 +13,7 @@ export const ExplorePage = () => {
     const [trips, setTrips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
-    const [imageFile, setImageFile] = useState(null);
-    const [form, setForm] = useState({
-        title: "",
-        country: "",
-        city: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-        visibility: "public",
-    });
+
     const [searchParams] = useSearchParams();
     const search = searchParams.get("search") || "";
     const date = searchParams.get("date") || "";
@@ -51,40 +41,6 @@ export const ExplorePage = () => {
     useEffect(() => {
         loadTrips();
     }, [search, date]);
-
-    // Crear nuevo viaje
-    const create = async (event) => {
-        event.preventDefault();
-        setSubmitting(true);
-
-        try {
-            const data = new FormData();
-            Object.entries(form).forEach(([key, value]) => data.append(key, value));
-
-            if (imageFile) {
-                data.append("image", imageFile);
-            }
-
-            await api.post("/trips", data);
-
-            setForm({
-                title: "",
-                country: "",
-                city: "",
-                startDate: "",
-                endDate: "",
-                description: "",
-                visibility: "public",
-            });
-            setImageFile(null);
-            setShowForm(false);
-            loadTrips();
-        } catch (error) {
-            alert(error.message || "Error al crear el viaje");
-        } finally {
-            setSubmitting(false);
-        }
-    };
 
     // Eliminar viaje
     const remove = async (id) => {
@@ -138,12 +94,10 @@ export const ExplorePage = () => {
 
                 {user && showForm && (
                     <CreateTripForm
-                        form={form}
-                        setForm={setForm}
-                        onSubmit={create}
-                        submitting={submitting}
-                        imageFile={imageFile}
-                        setImageFile={setImageFile}
+                        onSuccess={() => {
+                            setShowForm(false);
+                            loadTrips();
+                        }}
                     />
                 )}
 
