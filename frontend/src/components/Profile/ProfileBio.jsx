@@ -1,5 +1,6 @@
 import { useState } from "react";
-import api from "../api";
+import { FiEdit2 } from "react-icons/fi";
+import api from "../../api";
 
 export const ProfileBio = ({ profile, onBioUpdated }) => {
     const [editing, setEditing] = useState(false);
@@ -18,25 +19,26 @@ export const ProfileBio = ({ profile, onBioUpdated }) => {
 
     if (editing) {
         return (
-            <div className="mt-3">
+            <div className="mt-4">
                 <textarea
                     value={bioDraft}
                     onChange={(event) => setBioDraft(event.target.value)}
                     placeholder="Cuéntanos algo sobre ti..."
-                    rows={3}
-                    className="w-full text-sm text-gray-600 border border-gray-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                    rows={4}
+                    autoFocus
+                    className="w-full text-sm text-gray-700 border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300 transition"
                 />
-                <div className="flex gap-2 mt-2 justify-center sm:justify-start">
+                <div className="flex gap-4 mt-2">
                     <button
                         onClick={handleSave}
                         disabled={saving}
-                        className="text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded"
+                        className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
                     >
                         {saving ? "Guardando..." : "Guardar"}
                     </button>
                     <button
                         onClick={() => setEditing(false)}
-                        className="text-xs text-gray-500 hover:text-gray-700 px-3 py-1.5"
+                        className="text-xs text-gray-400 hover:text-gray-600"
                     >
                         Cancelar
                     </button>
@@ -47,22 +49,23 @@ export const ProfileBio = ({ profile, onBioUpdated }) => {
 
     if (profile.bio) {
         return (
-            <p className="text-sm text-gray-500 mt-3 leading-relaxed">
-                {profile.bio}
+            <div className="mt-4">
+                <p className="text-sm text-gray-600 leading-relaxed">{profile.bio}</p>
                 <button
                     onClick={() => setEditing(true)}
-                    className="ml-2 text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+                    className="flex items-center gap-1 mt-1.5 text-xs font-medium text-primary-600 hover:text-primary-700"
                 >
-                    Editar
+                    <FiEdit2 size={12} />
+                    Editar biografía
                 </button>
-            </p>
+            </div>
         );
     }
 
     return (
         <button
             onClick={() => setEditing(true)}
-            className="text-sm text-indigo-600 hover:text-indigo-700 font-medium mt-3"
+            className="mt-4 text-sm text-primary-600 hover:text-primary-700 font-medium"
         >
             + Añadir biografía
         </button>
